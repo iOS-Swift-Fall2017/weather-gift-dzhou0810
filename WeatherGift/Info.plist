@@ -41,5 +41,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>privacy</key>
+	<string></string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string></string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app will need access to your location to automatically find local weather.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app will need access to your location to automatically find local weather.</string>
 </dict>
 </plist>
