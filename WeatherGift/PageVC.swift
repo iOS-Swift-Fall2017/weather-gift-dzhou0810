@@ -23,10 +23,9 @@ class PageVC: UIPageViewController {
         delegate = self
         dataSource = self
         
-        var newLocation = WeatherLocation()
+        let newLocation = WeatherLocation()
         newLocation.name = ""
         locationsArray.append(newLocation)
-        
         setViewControllers([createDetailVC(forPage: 0)], direction: .forward, animated: false, completion: nil)
         
     }
@@ -41,9 +40,7 @@ class PageVC: UIPageViewController {
         let pageControlHeight: CGFloat = barButtonHeight
         let pageControlWidth: CGFloat = view.frame.width - (barButtonWidth * 2)
         
-        let safeHeight = view.frame.height - view.safeAreaInsets.bottom
-        
-        pageControl = UIPageControl(frame: CGRect(x: (view.frame.width - pageControlWidth) / 2, y: safeHeight - pageControlHeight, width: pageControlWidth, height: pageControlHeight))
+        pageControl = UIPageControl(frame: CGRect(x: (view.frame.width - pageControlWidth) / 2, y: view.frame.height - pageControlHeight, width: pageControlHeight, height: pageControlHeight))
         pageControl.pageIndicatorTintColor = UIColor.lightGray
         pageControl.currentPageIndicatorTintColor = UIColor.black
         pageControl.backgroundColor = UIColor.white
@@ -54,8 +51,8 @@ class PageVC: UIPageViewController {
     
     //MARK:- UI Configuration Methods
     func configureListButton(){
-        let safeHeight = view.frame.height - view.safeAreaInsets.bottom
-        listButton = UIButton(frame:CGRect(x: view.frame.width - barButtonWidth, y: safeHeight - barButtonHeight, width: barButtonWidth, height: barButtonHeight))
+        let barButtonHeight = barButtonWidth
+        listButton = UIButton(frame:CGRect(x: view.frame.width - barButtonWidth, y: view.frame.height - barButtonHeight, width: barButtonWidth, height: barButtonHeight))
         
         listButton.setImage(UIImage(named: "listbutton"), for: .normal)
         listButton.setImage(UIImage(named: "listbutton-highligheted"), for: .highlighted)

@@ -36,7 +36,8 @@ class WeatherLocation {
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
-                if let temperature = json["currently"]["temperature"].double{
+                
+                if let temperature = json["currently"]["temperature"].double {
                     let roundedTemp = String(format: "%3.f", temperature)
                     self.currentTemp = roundedTemp + "°"
                 } else {
@@ -71,15 +72,12 @@ class WeatherLocation {
                 self.dailyForcastArray = []
                 for day in 1...dailyDataArray.count-1 {
                     let maxTemp = json["daily"]["data"][day]["temperatureHigh"].doubleValue
-                    let minTemp = json["daily"]["data"][day]["temperaturelow"].doubleValue
+                    let minTemp = json["daily"]["data"][day]["temperatureLow"].doubleValue
                     let dateValue = json["daily"]["data"][day]["time"].doubleValue
                     let icon = json["daily"]["data"][day]["icon"].stringValue
                     let dailySummary = json["daily"]["data"][day]["summary"].stringValue
                     let newDailyForcast = DailyForecast(dailyMaxTemp: maxTemp, dailyMinTemp: minTemp, dailySummary: dailySummary, dailyDate: dateValue, dailyIcon: icon)
                     self.dailyForcastArray.append(newDailyForcast)
-                    
-                    
-                    
                 }
             case .failure(let error):
                 print(error)

@@ -16,6 +16,7 @@ class DetailVC: UIViewController {
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var currentImage: UIImageView!
     @IBOutlet weak var tableView: UITableView!
+    
     var currentPage = 0
     var locationsArray = [WeatherLocation]()
     var locationManager: CLLocationManager!
@@ -23,7 +24,7 @@ class DetailVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
+        tableView.dataSource = self
         tableView.delegate = self
         if currentPage != 0 {
             self.locationsArray[currentPage].getWeather{
@@ -51,7 +52,7 @@ class DetailVC: UIViewController {
     }
     
     func formatTimeForTimeZone(unixDate: TimeInterval, timeZone: String) -> String {
-        let usableDate = Date (timeIntervalSince1970: unixDate)
+        let usableDate = Date(timeIntervalSince1970: unixDate)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE, MMM dd, y"
         dateFormatter.timeZone = TimeZone(identifier: timeZone)
@@ -71,7 +72,7 @@ extension DetailVC: CLLocationManagerDelegate {
         switch status {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
-        case .authorizedAlways, .authorizedWhenInUse:
+        case .authorizedWhenInUse, .authorizedAlways:
             locationManager.requestLocation()
         case .denied:
             print("I'm sorry = can't show location. User has not authorized it.")
@@ -123,7 +124,7 @@ extension DetailVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DayWeatherCell", for: indexPath) as! DayWeatherCell
         let dailyForcast = locationsArray[currentPage].dailyForcastArray[indexPath.row]
         let timeZone = locationsArray[currentPage].timeZone
-        cell.update(with: dailyForcast, timeZone: )
+        cell.update(with: dailyForcast, timeZone: timeZone)
         return cell
     }
     
