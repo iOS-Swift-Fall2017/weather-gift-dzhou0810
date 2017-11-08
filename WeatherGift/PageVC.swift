@@ -23,10 +23,11 @@ class PageVC: UIPageViewController {
         delegate = self
         dataSource = self
         
-        let newLocation = WeatherLocation()
-        newLocation.name = ""
+        var newLocation = WeatherLocation(name: "", coordinates: "")
         locationsArray.append(newLocation)
-        setViewControllers([createDetailVC(forPage: 0)], direction: .forward, animated: false, completion: nil)
+        loadLocations()
+        
+      setViewControllers([createDetailVC(forPage: 0)], direction: .forward, animated: false, completion: nil)
         
     }
     
@@ -36,6 +37,21 @@ class PageVC: UIPageViewController {
         configureListButton()
     }
     
+    func loadLocations(){
+        guard let locationsEncoded = UserDefaults.standard.value(forKey: "locationsArray") as? Data else {
+                print("Could not load locationsArray from User Default")
+            return
+        }
+        
+        let decoder = JSONDecoder()
+        if let locationsArray = try? decoder.decode(Array.self, from: locationsEncoded) as [WeatherLocation] {
+            self.locationsArray = locationsArray
+        } else {
+            print("ERROR: Could not decode data read from User Defaults ")
+        }
+    }
+    
+   //MARK:- UI Configuration Methods
     func configurePageControl() {
         let pageControlHeight: CGFloat = barButtonHeight
         let pageControlWidth: CGFloat = view.frame.width - (barButtonWidth * 2)
@@ -49,7 +65,9 @@ class PageVC: UIPageViewController {
         view.addSubview(pageControl)
     }
     
-    //MARK:- UI Configuration Methods
+    
+    
+    
     func configureListButton(){
         let barButtonHeight = barButtonWidth
         listButton = UIButton(frame:CGRect(x: view.frame.width - barButtonWidth, y: view.frame.height - barButtonHeight, width: barButtonWidth, height: barButtonHeight))
